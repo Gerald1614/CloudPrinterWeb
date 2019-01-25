@@ -1,51 +1,56 @@
+/* eslint-disable func-names */
 import store from '../store/index';
 
 let that;
+const myHeaders = new Headers({
+  'Content-Type': 'application/json',
+});
 
-export const signUp = (formContent) => {
-  return fetch(`${process.env.VUE_APP_BASE_URI}/account/register`, {
+export const signUp = async function (formContent) {
+  console.log(formContent);
+  return fetch(`${process.env.VUE_APP_CLOUD_PRINTER_URL}/account/register`, {
     method: 'POST',
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-      'Content-Type': 'application/json',
-    },
+    mode: 'cors',
+    headers: myHeaders,
     body: JSON.stringify(formContent),
   })
-    .then(response => response.json())
-    .then((body) => {
-      console.log(body);
-      return Promise.resolve(body);
+    .then(function(response) { 
+      return response.json()
+    })
+    .then(function(body) {
+      return body;
     })
     .catch(err => signupFailed(err));
 };
 
-export const logIn = (data) => {
-  const user = data.formContent;
-  that = data.that;
-  return fetch(`${process.env.VUE_APP_BASE_URI}/account/login`, {
+export const logIn = async function (user) {
+  // that = user.that;
+  // delete user.that;
+  return fetch(`${process.env.VUE_APP_CLOUD_PRINTER_URL}/account/login`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    mode: 'cors',
+    headers: myHeaders,
     body: JSON.stringify(user),
   })
-    .then(res => res.json())
-    .then((userRes) => {
-      if (!userRes.token) {
-        loginFailed('message vide');
-      } else {
-        localStorage.token = userRes.token;
-        return Promise.resolve(userRes);
-      }
+    .then((res) => {
+      return res.json()
+        .then((userRes) => {
+          if (!userRes.token) {
+            loginFailed('message vide');
+          } else {
+            // localStorage.token = userRes.token;
+            return userRes;
+          }
+        });
     })
     .catch(err => loginFailed(err));
 };
 
-export const logOut = (self) => {
+export const logOut = function (self) {
   that = self;
   store.dispatch('Auth/LOGOUT');
   that.$router.push('/');
-}
+};
 
 function loginFailed(err) {
   store.dispatch('Auth/LOGOUT');

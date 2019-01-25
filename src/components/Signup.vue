@@ -22,12 +22,12 @@
             <v-text-field
               @click="alertSwitch"
               light
-              v-model.trim="username"
-              :error-messages="usernameErrors"
-              label="Email/username"
+              v-model.trim="email"
+              :error-messages="emailErrors"
+              label="Email/email"
               required
-              @input="$v.username.$touch()"
-              @blur="$v.username.$touch()"
+              @input="$v.email.$touch()"
+              @blur="$v.email.$touch()"
             ></v-text-field>
             </v-flex>
         </v-layout>
@@ -85,14 +85,14 @@ export default {
   mixins: [validationMixin],
   validations: {
       name: { required, minLength: minLength(4)},
-      username: { required, email },
+      email: { required, email },
       password: { required, minLength: minLength(6) },
       passwordCheck: { required, sameAs: sameAs('password') },
     },
 
   data () {
     return {
-        username: '',
+        email: '',
         password: '',
         passwordCheck: '',
         e1: true,
@@ -103,7 +103,6 @@ export default {
       }
     },
   computed: {
-
       nameErrors () {
         const errors = []
         if (!this.$v.name.$dirty) return errors
@@ -111,11 +110,11 @@ export default {
         !this.$v.name.required && errors.push('Le nom est obligatoire')
         return errors
       },
-      usernameErrors () {
+      emailErrors () {
         const errors = []
-        if (!this.$v.username.$dirty) return errors
-        !this.$v.username.email && errors.push('Must be valid e-mail')
-        !this.$v.username.required && errors.push('E-mail is required')
+        if (!this.$v.email.$dirty) return errors
+        !this.$v.email.email && errors.push('Must be valid e-mail')
+        !this.$v.email.required && errors.push('E-mail is required')
         return errors
       },
       passwordErrors () {
@@ -143,21 +142,21 @@ export default {
         this.submitStatus = 'ERROR'
       } else {
         try {
-          let formContent = { username: this.username, password: this.password, name: this.name }
+          let formContent = { email: this.email, password: this.password, name: this.name }
           let result = await signUp(formContent)
           if (result === 'signUp failed') {
             this.alert=true
             this.alertMsg="la procedure a échouée, merci de recommencer plus tard"
             return
           }
-          let logData = {formContent: { username: result.email, password: result.password }, that: this}
+          let logData = { email: result.email, password: result.password}
           let logRes = await logIn(logData)
           if (result === 'login failed') {
             this.alert=true
             this.alertMsg="votre profil a été crée, merci de vous connectez"
             return
           }
-          store.dispatch('Auth/LOGIN', {id: result._id, token: result.token, username: result.email, name: result.name})
+          store.dispatch('Auth/LOGIN', {id: result._id, token: result.token, email: result.email, name: result.name})
         }
         catch(error) {
             console.log(error)
@@ -167,7 +166,7 @@ export default {
     clear () {
       this.$v.$reset()
       this.name = ''
-      this.username = ''
+      this.email = ''
       this.password = ''
       this.passwordCheck = ''
       this.$router.push('/')

@@ -52,7 +52,7 @@ export default {
       this.alert = false
     },
     async submit () {
-      let data = {formContent: {username: this.email, password: this.password}, that: this}
+      let data = {email: this.email, password: this.password}
       let result = await logIn(data)
       console.log(result)
       if (result === 'login failed') {
@@ -60,7 +60,8 @@ export default {
         this.alertMsg = "nom d'usager ou mot de passe éronné"
         return
       }
-      store.dispatch('Auth/LOGIN', {id: result._id, token: result.token, username: result.email, name: result.name})
+      this.$store.dispatch('Auth/LOGIN', {token: result.token, email: result.email})
+      this.$router.push('/')
     },
     clear () {
       this.email = ''
