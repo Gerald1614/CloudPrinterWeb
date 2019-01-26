@@ -7,25 +7,19 @@ const myHeaders = new Headers({
 });
 
 export const signUp = async function (formContent) {
-  console.log(formContent);
   return fetch(`${process.env.VUE_APP_CLOUD_PRINTER_URL}/account/register`, {
     method: 'POST',
     mode: 'cors',
     headers: myHeaders,
     body: JSON.stringify(formContent),
   })
-    .then(function(response) { 
-      return response.json()
-    })
-    .then(function(body) {
-      return body;
-    })
+    .then((response) => response.json()
+    .then((body) => body)
+    )
     .catch(err => signupFailed(err));
 };
 
 export const logIn = async function (user) {
-  // that = user.that;
-  // delete user.that;
   return fetch(`${process.env.VUE_APP_CLOUD_PRINTER_URL}/account/login`, {
     method: 'POST',
     mode: 'cors',
@@ -38,7 +32,6 @@ export const logIn = async function (user) {
           if (!userRes.token) {
             loginFailed('message vide');
           } else {
-            // localStorage.token = userRes.token;
             return userRes;
           }
         });

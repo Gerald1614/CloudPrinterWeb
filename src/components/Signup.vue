@@ -149,14 +149,15 @@ export default {
             this.alertMsg="la procedure a échouée, merci de recommencer plus tard"
             return
           }
-          let logData = { email: result.email, password: result.password}
+          let logData = { email: result.email, password: this.password}
           let logRes = await logIn(logData)
-          if (result === 'login failed') {
+          if (logRes === 'login failed') {
             this.alert=true
             this.alertMsg="votre profil a été crée, merci de vous connectez"
             return
           }
-          store.dispatch('Auth/LOGIN', {id: result._id, token: result.token, email: result.email, name: result.name})
+          this.$store.dispatch('Auth/LOGIN', { token: logRes.token, email: logRes.email })
+          this.$router.push('/')
         }
         catch(error) {
             console.log(error)
