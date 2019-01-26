@@ -1,6 +1,6 @@
 export default {
   user: {
-    email: '',
-    token: '',
+    email: localStorage.email,
+    token: localStorage.token,
   },
 };

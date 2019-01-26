@@ -3,7 +3,7 @@
 import { register } from 'register-service-worker';
 
 if (process.env.NODE_ENV === 'production') {
-  register(`${process.env.BASE_URL}service-worker.js`, {
+  register(`${process.env.VUE_APP_BASE_URL}sw.js`, {
     ready() {
       console.log(
         'App is being served from cache by a service worker.\n'
@@ -19,8 +19,10 @@ if (process.env.NODE_ENV === 'production') {
     updatefound() {
       console.log('New content is downloading.');
     },
-    updated() {
-      console.log('New content is available; please refresh.');
+    updated(registration) {
+      console.log("New content is available; please refresh.");
+      let worker = registration.waiting
+      worker.postMessage({action: 'skipWaiting'})
     },
     offline() {
       console.log('No internet connection found. App is running in offline mode.');

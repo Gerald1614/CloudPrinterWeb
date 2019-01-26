@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-navigation-drawer app
     :mini-variant.sync="mini"
     v-model="drawer"

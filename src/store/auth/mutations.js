@@ -5,4 +5,6 @@ export const login = (state, user) => {
 export const logout = (state) => {
   state.user.email = '';
   state.user.token = '';
+  delete localStorage.token;
+  delete localStorage.email;
 };

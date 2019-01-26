@@ -1,7 +1,16 @@
 /* eslint-disable func-names */
 import store from '../store/index';
 
-let that;
+function loginFailed(err) {
+  store.dispatch('Auth/LOGOUT');
+  console.log(`login failed ${err}`);
+  return 'login failed';
+}
+function signupFailed(err) {
+  console.log(err);
+  return 'signUp failed';
+}
+
 const myHeaders = new Headers({
   'Content-Type': 'application/json',
 });
@@ -13,9 +22,8 @@ export const signUp = async function (formContent) {
     headers: myHeaders,
     body: JSON.stringify(formContent),
   })
-    .then((response) => response.json()
-    .then((body) => body)
-    )
+    .then(response => response.json()
+      .then(body => body))
     .catch(err => signupFailed(err));
 };
 
@@ -26,32 +34,18 @@ export const logIn = async function (user) {
     headers: myHeaders,
     body: JSON.stringify(user),
   })
-    .then((res) => {
-      return res.json()
-        .then((userRes) => {
-          if (!userRes.token) {
-            loginFailed('message vide');
-          } else {
-            return userRes;
-          }
-        });
-    })
+    .then(res => res.json()
+      .then((userRes) => {
+        if (!userRes.token) {
+          loginFailed('message vide');
+        } else {
+          return userRes;
+        }
+      }))
     .catch(err => loginFailed(err));
 };
 
-export const logOut = function (self) {
-  that = self;
+export const logOut = function () {
   store.dispatch('Auth/LOGOUT');
-  that.$router.push('/');
 };
 
-function loginFailed(err) {
-  store.dispatch('Auth/LOGOUT');
-  console.log(`login failed ${err}`);
-  return 'login failed';
-}
-function signupFailed(err) {
-  console.log(err);
-  that.$router.push('/signup');
-  return 'signUp failed';
-}

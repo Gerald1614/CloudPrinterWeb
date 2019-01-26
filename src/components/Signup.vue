@@ -2,13 +2,11 @@
 <v-container>
   <v-layout justify-center align-center>
     <v-flex xs12 sm8>
-      <v-card light class=" ma-2 pa-5">
-      <form light class="form" @submit.prevent="submit">
+      <v-card class=" ma-2 pa-5">
+      <form class="form" @submit.prevent="submit">
         <v-layout row wrap justify-space-between>
           <v-flex d-flex xs12 sm5>
             <v-text-field
-              @click="alertSwitch"
-              light
               v-model.trim="name"
               :error-messages="nameErrors"
               :counter="3"
@@ -20,11 +18,9 @@
           </v-flex>
           <v-flex d-flex xs12 sm5>
             <v-text-field
-              @click="alertSwitch"
-              light
               v-model.trim="email"
               :error-messages="emailErrors"
-              label="Email/email"
+              label="Email"
               required
               @input="$v.email.$touch()"
               @blur="$v.email.$touch()"
@@ -35,14 +31,12 @@
         <v-layout row wrap justify-space-between>
           <v-flex d-flex xs12 sm5>
             <v-text-field
-              @click="alertSwitch"
-              light
               v-model="password"
               :error-messages="passwordErrors"
-              :append-icon="e1 ? 'visibility' : 'visibility_off'"
-              :append-icon-cb="() => (e1 = !e1)"
+              :append-icon="e1 ?  'visibility_off' : 'visibility'"
+              @click:append="e1 = !e1"
               :type="e1 ? 'password' : 'text'"
-              label="Mot de Passe"
+              label="Password"
               required
               @input="$v.password.$touch()"
               @blur="$v.password.$touch()"
@@ -51,13 +45,12 @@
           </v-flex>
           <v-flex d-flex xs12 sm5>
             <v-text-field
-              light
               v-model="passwordCheck"
               :error-messages="passwordCheckErrors"
-              :append-icon="e2 ? 'visibility' : 'visibility_off'"
-              :append-icon-cb="() => (e2 = !e2)"
+              :append-icon="e2 ? 'visibility_off' : 'visibility'"
+              @click:append="e2 = !e2"
               :type="e2 ? 'password' : 'text'"
-              label="Verification du mot de Passe"
+              label="Validate password"
               required
               @input="$v.passwordCheck.$touch()"
               @blur="$v.passwordCheck.$touch()"
@@ -65,9 +58,9 @@
             ></v-text-field>
           </v-flex>
         </v-layout>
-        <v-btn light type="submit">submit</v-btn>
-        <v-btn light @click="clear">cancel</v-btn>
-        <v-alert light v-model="alert" type="error" color="error" icon="new_releases">{{ alertMsg }}</v-alert>
+        <v-btn type="submit">submit</v-btn>
+        <v-btn @click="clear">cancel</v-btn>
+        <v-alert v-model="alert" type="error" color="error" icon="new_releases">{{ alertMsg }}</v-alert>
       </form>
       </v-card>
     </v-flex>
@@ -106,8 +99,8 @@ export default {
       nameErrors () {
         const errors = []
         if (!this.$v.name.$dirty) return errors
-        !this.$v.name.minLength && errors.push('Le nom doit faire au moins 3 caracteres')
-        !this.$v.name.required && errors.push('Le nom est obligatoire')
+        !this.$v.name.minLength && errors.push('3 characters minimum')
+        !this.$v.name.required && errors.push('mandatory field')
         return errors
       },
       emailErrors () {
@@ -120,22 +113,19 @@ export default {
       passwordErrors () {
         const errors = []
         if (!this.$v.password.$dirty) return errors
-        !this.$v.password.minLength && errors.push('Le Mot de Passe doit faire au moins 6 caracteres')
-        !this.$v.password.required && errors.push('Le mot de passe est obligatoire')
+        !this.$v.password.minLength && errors.push('6 characters minimum')
+        !this.$v.password.required && errors.push('password is required')
         return errors
       },
       passwordCheckErrors () {
         const errors = []
         if (!this.$v.passwordCheck.$dirty) return errors
-        !this.$v.passwordCheck.sameAs && errors.push('les deux mots de passe sont différents')
-        !this.$v.passwordCheck.required && errors.push('Le mot de passe est obligatoire')
+        !this.$v.passwordCheck.sameAs && errors.push('Passwords do not match')
+        !this.$v.passwordCheck.required && errors.push('password is required')
         return errors
       },
     },
   methods: {
-        alertSwitch () {
-      this.alert=false
-    },
     async submit () {
       this.$v.$touch()
       if (this.$v.$invalid) {
@@ -146,16 +136,19 @@ export default {
           let result = await signUp(formContent)
           if (result === 'signUp failed') {
             this.alert=true
-            this.alertMsg="la procedure a échouée, merci de recommencer plus tard"
+            this.alertMsg="Signup failed, please try again later"
             return
           }
           let logData = { email: result.email, password: this.password}
           let logRes = await logIn(logData)
           if (logRes === 'login failed') {
             this.alert=true
-            this.alertMsg="votre profil a été crée, merci de vous connectez"
+            this.alertMsg="your profil has been created, please login"
+            setTimeout(() => this.alert=false, 4000)
             return
           }
+          localStorage.token = logRes.token
+          localStorage.email = logRes.email
           this.$store.dispatch('Auth/LOGIN', { token: logRes.token, email: logRes.email })
           this.$router.push('/')
         }

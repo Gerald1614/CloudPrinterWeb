@@ -1,6 +1,10 @@
 module.exports = {
   pwa: {
     workboxPluginMode: 'InjectManifest',
-    name: 'CloudPrinter',
+    transpile: true,
+    workboxOptions: {
+      swSrc: 'src/sw.js',
+      swDest: 'sw.js',
+    },
   },
 };
