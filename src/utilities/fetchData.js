@@ -14,6 +14,21 @@ function signupFailed(err) {
 const myHeaders = new Headers({
   'Content-Type': 'application/json',
 });
+export const getOrders = async function () {
+  return fetch(`${process.env.VUE_APP_CLOUD_PRINTER_URL}/orders`, {
+    method: 'GET',
+    mode: 'cors',
+    headers: myHeaders,
+  })
+    .then(response => response.json()
+      .then((body) => {
+        console.log(body.length)
+        if (body.length > 0) {
+          store.dispatch('Orders/LoadOrders', body);
+        }
+      }))
+    .catch(err => signupFailed(err));
+};
 
 export const signUp = async function (formContent) {
   return fetch(`${process.env.VUE_APP_CLOUD_PRINTER_URL}/account/register`, {

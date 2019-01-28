@@ -19,8 +19,8 @@
               label="Password"
             ></v-text-field>
           </v-flex>
-        <v-btn type="submit">submit</v-btn>
-        <v-btn @click="clear">cancel</v-btn>
+        <v-btn  color="success" type="submit">submit</v-btn>
+        <v-btn  color="warning" @click="clear">cancel</v-btn>
         <v-alert v-model="alert" type="error" color="error" icon="new_releases">{{ alertMsg }}</v-alert>
       </form>
       </v-card>
@@ -33,7 +33,6 @@
 import {logIn, getProfile} from '../utilities/fetchData.js'
 import { setTimeout } from 'timers';
 export default {
-
   data () {
     return {
       email: '',

@@ -4,6 +4,7 @@ import Home from './views/Home.vue';
 import Login from './components/Login.vue';
 import Signup from './components/Signup.vue';
 import Logout from './components/Logout.vue';
+import ListOrders from './components/ListOrders.vue';
 
 Vue.use(Router);
 
@@ -30,6 +31,11 @@ export default new Router({
       path: '/logout',
       name: 'logout',
       component: Logout,
+    },
+    {
+      path: '/orders',
+      name: 'orders',
+      component: ListOrders,
     },
     // {
     //   path: '/about',

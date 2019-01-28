@@ -29,12 +29,12 @@
     </v-toolbar>
     <v-list>
       <v-list-group>
-        <v-list-tile
-          slot="activator">
-          <v-list-tile-content>
-            <v-list-tile-title>{{ user.name ? user.name : 'login' }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+        <v-list-tile slot="activator">
+          <v-list-tile-action>
+            <v-icon>face</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>{{ user.email ? user.email : 'Login/Signup' }}</v-list-tile-title>
+          </v-list-tile>
         <v-list-tile
           to='/login'
           v-if="!this.$store.getters['Auth/isAuthenticated']"
@@ -74,19 +74,20 @@
           no-action
           sub-group
           value="true"
+          v-if="this.$store.getters['Auth/isAuthenticated']"
+
         >
           <v-list-tile slot="activator">
-            <v-list-tile-title>Admin</v-list-tile-title>
+            <v-list-tile-title>Orders</v-list-tile-title>
           </v-list-tile>
-
           <v-list-tile
-            v-for="(admin, i) in admins"
+            v-for="(order, i) in orders"
             :key="i"
-            @click=""
+            :to="order[2]"
           >
-            <v-list-tile-title v-text="admin[0]"></v-list-tile-title>
+            <v-list-tile-title v-text="order[0]"></v-list-tile-title>
             <v-list-tile-action>
-              <v-icon v-text="admin[1]"></v-icon>
+              <v-icon v-text="order[1]"></v-icon>
             </v-list-tile-action>
           </v-list-tile>
         </v-list-group>
@@ -126,7 +127,7 @@
 </template>
 
 <script>
-import {fetchData} from './utilities/fetchData.js'
+import { getOrders } from './utilities/fetchData.js'
 import store from '../src/store/index'
 import { mapGetters } from 'vuex'
 import DashBoard from './components/DashBoard'
@@ -147,6 +148,9 @@ export default {
     })
   }
   },
+  mounted: () => {
+    getOrders()
+  },
   computed: {
     ...mapGetters({
     user: 'Auth/getLoggedUser'
@@ -157,9 +161,9 @@ export default {
       drawer: true,
       mini: true,
       right: null,
-      admins: [
-        ['Management', 'people_outline'],
-        ['Settings', 'settings']
+      orders: [
+        ['New Orders', 'people_outline', '/newOrders'],
+        ['Order List', 'settings', '/orders']
       ],
       cruds: [
         ['Create', 'add'],
