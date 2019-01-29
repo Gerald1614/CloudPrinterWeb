@@ -4,7 +4,9 @@ import Home from './views/Home.vue';
 import Login from './components/Login.vue';
 import Signup from './components/Signup.vue';
 import Logout from './components/Logout.vue';
-import ListOrders from './components/ListOrders.vue';
+import ListOrdersCards from './components/ListOrdersCards.vue';
+import ListOrdersList from './components/ListOrdersList.vue';
+import ListNewOrdersList from './components/ListNewOrdersList.vue';
 
 Vue.use(Router);
 
@@ -33,9 +35,19 @@ export default new Router({
       component: Logout,
     },
     {
-      path: '/orders',
-      name: 'orders',
-      component: ListOrders,
+      path: '/ordersCard',
+      name: 'ordersCard',
+      component: ListOrdersCards,
+    },
+    {
+      path: '/newOrdersList',
+      name: 'newOrdersList',
+      component: ListNewOrdersList,
+    },
+    {
+      path: '/ordersList',
+      name: 'ordersList',
+      component: ListOrdersList,
     },
     // {
     //   path: '/about',

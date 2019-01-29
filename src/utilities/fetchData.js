@@ -22,7 +22,6 @@ export const getOrders = async function () {
   })
     .then(response => response.json()
       .then((body) => {
-        console.log(body.length)
         if (body.length > 0) {
           store.dispatch('Orders/LoadOrders', body);
         }
@@ -52,10 +51,9 @@ export const logIn = async function (user) {
     .then(res => res.json()
       .then((userRes) => {
         if (!userRes.token) {
-          loginFailed('message vide');
-        } else {
-          return userRes;
+          return loginFailed('message vide');
         }
+        return userRes;
       }))
     .catch(err => loginFailed(err));
 };
@@ -63,4 +61,3 @@ export const logIn = async function (user) {
 export const logOut = function () {
   store.dispatch('Auth/LOGOUT');
 };
-

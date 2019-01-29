@@ -27,7 +27,7 @@
         </v-list-tile>
       </v-list>
     </v-toolbar>
-    <v-list>
+    <v-list dense>
       <v-list-group>
         <v-list-tile slot="activator">
           <v-list-tile-action>
@@ -69,15 +69,16 @@
           </v-list-tile-content>
         </v-list-tile>
      </v-list-group>
-
         <v-list-group
           no-action
           sub-group
           value="true"
           v-if="this.$store.getters['Auth/isAuthenticated']"
-
         >
           <v-list-tile slot="activator">
+            <v-list-tile-action>
+            <v-icon>payment</v-icon>
+          </v-list-tile-action>
             <v-list-tile-title>Orders</v-list-tile-title>
           </v-list-tile>
           <v-list-tile
@@ -85,30 +86,11 @@
             :key="i"
             :to="order[2]"
           >
-            <v-list-tile-title v-text="order[0]"></v-list-tile-title>
             <v-list-tile-action>
               <v-icon v-text="order[1]"></v-icon>
             </v-list-tile-action>
-          </v-list-tile>
-        </v-list-group>
+            <v-list-tile-title v-text="order[0]"></v-list-tile-title>
 
-        <v-list-group
-          sub-group
-          no-action
-        >
-          <v-list-tile slot="activator">
-            <v-list-tile-title>Actions</v-list-tile-title>
-          </v-list-tile>
-
-          <v-list-tile
-            v-for="(crud, i) in cruds"
-            :key="i"
-            @click=""
-          >
-            <v-list-tile-title v-text="crud[0]"></v-list-tile-title>
-            <v-list-tile-action>
-              <v-icon v-text="crud[1]"></v-icon>
-            </v-list-tile-action>
           </v-list-tile>
         </v-list-group>
     </v-list>
@@ -159,18 +141,13 @@ export default {
   data () {
     return {
       drawer: true,
-      mini: true,
+      mini: false,
       right: null,
       orders: [
-        ['New Orders', 'people_outline', '/newOrders'],
-        ['Order List', 'settings', '/orders']
+        ['New Orders', 'input', '/newOrdersList'],
+        ['Order List Card', 'list', '/ordersCard'],
+        ['Order List', 'list', '/ordersList']
       ],
-      cruds: [
-        ['Create', 'add'],
-        ['Read', 'insert_drive_file'],
-        ['Update', 'update'],
-        ['Delete', 'delete']
-      ]
     }
   }
 }
