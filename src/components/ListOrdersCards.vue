@@ -43,7 +43,7 @@
               <v-list-tile-content>Order #</v-list-tile-content>
               <v-list-tile-content class="align-end">{{ props.item.order.id }}</v-list-tile-content>
             </v-list-tile>
-            <list-orders-detail v-bind:order="props.item"></list-orders-detail>
+            <list-orders-details v-bind:order="props.item"></list-orders-details>
           </v-list>
         </v-card>
       </v-flex>
@@ -53,11 +53,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ListOrdersDetail from './ListOrdersDetail'
+import ListOrdersDetails from './ListOrdersDetails'
 
 export default {
   components: {
-    ListOrdersDetail
+    ListOrdersDetails
   },
   name: 'ListOrdersCards',
   data () {

@@ -1,7 +1,7 @@
 <template>
   <v-card>
-    <v-card-title>
-      Current Orders
+    <v-card-title class="display-3">
+      {{ tableTitle }}
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -33,6 +33,7 @@
         ></v-checkbox>
       </td>
       <td>{{ props.item.id }}</td>
+      <td class="text-xs">{{ props.item.title }}</td>
       <td class="text-xs">{{ props.item.order.date | date }}</td>
       <td class="text-xs">{{ props.item.order.priority | date }}</td>
       <td class="text-xs">{{ props.item.count }}</td>
@@ -41,7 +42,7 @@
       <td v-if="props.item.status" class="text-xs"><span><v-icon color="green darken-2" v-if="props.item.status.signalSent">mail_outline</v-icon><v-icon color="red darken-2" v-else>unsubscribe</v-icon> {{  props.item.status.datetime | date}}</span></td>
       <td v-else class="text-xs">-</td>
       <td class="justify-center layout px-0">
-          <v-icon color="blue darken-2" @click.stop="nextStep(props.item, props.item.status.type)">skip_next</v-icon>
+          <v-icon color="blue darken-2" @click.stop="nextStep(props.item , props.item.status ? props.item.status.type : 'newOrder')">skip_next</v-icon>
           <v-icon color="orange darken-2" @click.stop="nextStep(props.item, 'ItemError')">error</v-icon>
           <v-icon color="red darken-2" @click.stop="nextStep(props.item, 'ItemCanceled')">cancel</v-icon>
         </td>
@@ -49,7 +50,7 @@
     </template>
           <template slot="expand" slot-scope="props">
         <v-card flat>
-          <v-card-text>{{ props.item.id}}</v-card-text>
+          <list-orders-details v-bind:order="props.item"></list-orders-details>
         </v-card>
       </template>
       <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -60,21 +61,28 @@
    <v-dialog v-model="dialog" max-width="500px">
         <v-card>
           <v-card-title>
-            <p class="headline">Confirm to Cloud Printer</p>
+            <p class="headline light-blue--text text--darken-4">Confirm to Cloud Printer</p>
           </v-card-title>
           <v-card-text>
             <p class="title"> OrderItem # : {{ signal.id }}</p>
             <v-container grid-list-md>
               <v-layout align-center>
                 <v-flex xs12 sm6 md4>
-                  <span class="subheading">{{ signal.status.type }}</span>
+                  <span class="subheading">{{ signal.status ? signal.status.type : 'new Order'  }}</span>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                   <v-progress-linear height="20" :indeterminate="true"></v-progress-linear>
-                  <!-- <v-icon large color="green darken-4">label</v-icon> -->
                 </v-flex>
                 <v-flex xs12 sm6 md4>
-                  <span class="subheading">{{nextAction(signal.status.type)}}</span>
+                  <span class="subheading">{{signal.nextAction}}</span>
+                </v-flex>
+              </v-layout>
+               <v-layout align-center v-if="signal.nextAction === 'ItemShipped'">
+                <v-flex xs12 sm6 md4>
+                  <v-text-field label="tracking code" v-model="signal.tracking" class="subheading"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                  <v-text-field label="shipping_option" v-model="signal.shipping_option" class="subheading"></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -92,20 +100,22 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ListOrdersDetail from './ListOrdersDetail'
+import ListOrdersDetails from './ListOrdersDetails'
 
 export default {
   components: {
-    ListOrdersDetail
+    ListOrdersDetails
   },
   name: 'ListOrdersList',
   data () {
     return {
+      tableTitle: '',
       signal: {
         'id': '',
         'status': {
           'type': '',
         },
+        nextAction: ''
       },
       dialog: false,
       steps: ['ItemRegistered', 'ItemProduce', 'ItemProduced', 'ItemPacked', 'ItemShipped'],
@@ -115,16 +125,17 @@ export default {
        headers: [
           {
             text: 'ItemOrder #',
-            align: 'center',
+            align: 'left',
             sortable: false,
             value: 'id'
           },
-          { text: 'Received', value: 'order.date' },
-          { text: 'Due date', value: 'order.priority' },
-          { text: 'Qty', value: 'count' },
-          { text: 'Status', value: 'status.type' },
-          { text: 'last activity', value: 'status.datetime' },
-          { text: 'Action', value: 'Action', sortable: false }
+          { text: 'Title', align: 'left', value: 'order.title' },
+          { text: 'Received', align: 'left', value: 'order.date' },
+          { text: 'Due date', align: 'left', value: 'order.priority' },
+          { text: 'Qty', align: 'left', value: 'count' },
+          { text: 'Status', align: 'left', value: 'status.type' },
+          { text: 'last activity', align: 'left', value: 'status.datetime' },
+          { text: 'Action', align: 'left', value: 'Action', sortable: false }
         ],
     }
   },
@@ -135,17 +146,31 @@ export default {
     },
   computed: {
     items () {
-    return this.$store.getters['Orders/getOrders']
+      console.log(this.$route.params.liste)
+      if (this.$route.params.liste === 'currentOrders')  {
+        this.tableTitle = 'Current Orders'
+        return this.$store.getters['Orders/getOrders']}
+      else if (this.$route.params.liste === 'newOrders'){
+        this.tableTitle = 'New Orders'
+        return this.$store.getters['Orders/getNewOrders']
+      } else this.$router.push('/404')
     }
-    
   },
   methods: {
-    nextAction(currentStatus){
-      return this.steps[this.steps.findIndex(k => k===currentStatus)+1]
-    },
-
     nextStep (item, step) {
-         this.signal = item
+      if (step ==='ItemCanceled' || step ==='ItemError') {
+        console.log('cacnel or erro')
+        item.nextAction = step
+      } else if(step === 'newOrder') {
+        console.log('neworder')
+        item.nextAction = 'ItemRegistered'
+      } else if (item.status.type === 'ItemShipped') {
+        console.log('resend signal')
+      }  else {
+        console.log('workflow')
+        item.nextAction = this.steps[this.steps.findIndex(k => k===step)+1]
+      }
+        this.signal = item
         this.dialog = true
       },
 
@@ -168,3 +193,7 @@ export default {
     }
 }
 </script>
+<style lang="stylus">
+
+
+</style>

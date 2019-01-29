@@ -12,6 +12,8 @@ import Vuetify, {
   VCard,
   VAlert,
   VCheckbox,
+  VTextField,
+  VBadge,
   VBtn,
   VIcon,
 } from 'vuetify/lib';
@@ -32,6 +34,8 @@ Vue.use(Vuetify, {
     VCard,
     VAlert,
     VCheckbox,
+    VTextField,
+    VBadge,
     VBtn,
     VIcon,
   },
