@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuetify, {
   VDataIterator,
   VDataTable,
+  VDialog,
   VNavigationDrawer,
   VToolbar,
   VLayout,
@@ -21,6 +22,7 @@ Vue.use(Vuetify, {
   components: {
     VDataIterator,
     VDataTable,
+    VDialog,
     VNavigationDrawer,
     VToolbar,
     VLayout,
