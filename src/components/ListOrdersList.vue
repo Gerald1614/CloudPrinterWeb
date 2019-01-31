@@ -39,7 +39,7 @@
       <td class="text-xs px-2">{{ props.item.count }}</td>
       <td v-if="props.item.status" class="text-xs px-2">{{ props.item.status.type }}</td>
       <td v-else class="text-xs px-2">New Order</td>
-      <td v-if="props.item.status" class="text-xs px-2"><span><v-icon color="green darken-2" v-if="props.item.status.signalSent">mail_outline</v-icon><v-icon color="red darken-2" v-else>unsubscribe</v-icon> {{  props.item.status.datetime | date}}</span></td>
+      <td v-if="props.item.status" class="text-xs px-2"><span><v-icon color="green darken-2" v-if="props.item.status.signalSent">mail_outline</v-icon><v-icon @click.stop="sendSignal(props.item)" color="red darken-2" v-else>unsubscribe</v-icon> {{  props.item.status.datetime | date}}</span></td>
       <td v-else class="text-xs px-2">-</td>
       <td class="align-center px-0">
         <v-tooltip left>
@@ -74,7 +74,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import ListOrdersDetails from './ListOrdersDetails'
 import DialogError from './DialogBox/DialogError'
 import DialogCancel from './DialogBox/DialogCancel'
@@ -131,6 +130,9 @@ export default {
     },
   },
   methods: {
+    sendSignal(item) {
+      alert('send signal')
+    },
     nextStep (item, step) {
       if (step ==='ItemCanceled') {
         item.dialogCancel = true
@@ -138,14 +140,14 @@ export default {
       } else if(step === 'ItemError') {
         item.dialogError = true
         item.nextAction = step
-      }  else if (item.status.type === 'ItemPacked') {
-        item.dialogShipping = true
-        item.nextAction = this.steps[this.steps.findIndex(k => k===step)+1]
-      } else if(step === 'newOrder') {
+      }  else if (!item.hasOwnProperty('status')) {
         item.nextAction = 'ItemRegistered'
         item.dialogDefault = true
-      } else if (item.status.type === 'ItemShipped') {
-        alert('send signal')
+      } else if (item.status.type === 'ItemPacked') {
+        item.dialogShipping = true
+        item.nextAction = this.steps[this.steps.findIndex(k => k===step)+1]
+      }  else if (item.status.type === 'ItemShipped') {
+        this.sendSignal()
       }else {
         item.nextAction = this.steps[this.steps.findIndex(k => k===step)+1]
         item.dialogDefault = true

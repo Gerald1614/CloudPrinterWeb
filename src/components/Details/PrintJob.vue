@@ -11,7 +11,7 @@
             <v-icon color="white">{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
           </v-btn>
         </v-card-title>
-        <v-card-text  v-show="show" v-for="file, index in order.files" :key="index" primary-title>
+        <v-card-text  v-show="show" v-for="(file, index) in order.files" :key="index" primary-title>
           <v-card>
             <v-card-title class="headline">{{ file.type }} {{ order.options[index].count}} pages</v-card-title>
             <v-card-text>
@@ -43,3 +43,10 @@
     }
   }
 </script>
+<style lang="stylus" scoped>
+.v-btn {
+  position: absolute
+  top : 0px;
+  right: 0px;
+}
+</style>

@@ -26,7 +26,7 @@
             :value="order.order.client.reference"
           ></v-text-field>
         </v-flex>
-        <div v-for="file, index in order.order.files" :key="index" >
+        <div v-for="(file, index) in order.order.files" :key="index" >
         <v-flex xs12>
           <v-text-field
             label="file.url"
@@ -48,3 +48,10 @@
     })
   }
 </script>
+<style lang="stylus" scoped>
+.v-btn {
+  position: absolute
+  top : 0px;
+  right: 0px;
+}
+</style>

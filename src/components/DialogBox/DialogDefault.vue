@@ -25,8 +25,18 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click="submit">Submit</v-btn>
+            <v-btn 
+              color="blue darken-1"
+              flat
+              @click="close"
+            >Cancel</v-btn>
+            <v-btn 
+              color="blue darken-1"
+              flat
+              :loading="loading"
+              :disabled="loading"
+              @click="submit"
+            >Submit</v-btn>
           </v-card-actions>
         </v-card>
         </v-form>
@@ -34,6 +44,7 @@
 </template>
 
 <script>
+import { sendSignal } from '../../utilities/fetchData.js'
 
 export default {
   name: 'DialogDefault',
@@ -41,6 +52,7 @@ export default {
   data () {
     return {
       dialog: false,
+      loading: false,
     }
   },
   watch: {
@@ -50,32 +62,62 @@ export default {
       }
     }
   },
-  computed: {
-
-  },
   methods: {
       close () {
         this.dialog = false
-
       },
       async submit () {
-        this.$v.$touch()
-        if (this.$v.$invalid) {
-        this.submitStatus = 'ERROR'
-        console.log('error')
-      } else {
         try {
-          let formContent = { id: this.$route.params.id, profile: {telephone: this.membre.coordonnees.telephone, }}
-          let result = await editProfile(formContent)
-          getProfile({id: this.$route.params.id, token: localStorage.token})
-          this.$router.push('/')
+          this.loading = true
+          let formContent = { id: this.item._id, signal: this.item.nextAction}
+          let result = await sendSignal(formContent)
+          if (result) {
+            this.loading=false
+            this.close()
+          }
         }
         catch(error) {
             console.log(error)
         }
-        this.close()
       }
-      }
-    }
+  }
 }
 </script>
+<style lang="stylus" scoped>
+.custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

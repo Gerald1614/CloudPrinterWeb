@@ -50,8 +50,18 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click="submit">Submit</v-btn>
+            <v-btn 
+              color="blue darken-1"
+              flat
+              @click="close"
+            >Cancel</v-btn>
+            <v-btn 
+              color="blue darken-1"
+              flat
+              :loading="loading"
+              :disabled="loading"
+              @click="submit"
+            >Submit</v-btn>
           </v-card-actions>
         </v-card>
         </v-form>
@@ -61,6 +71,8 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, minLength } from 'vuelidate/lib/validators'
+import { sendSignal } from '../../utilities/fetchData.js'
+
 export default {
   name: 'DialogError',
   props: ['item'],
@@ -74,6 +86,7 @@ export default {
   data () {
     return {
       dialog: false,
+      loading: false,
     }
   },
   watch: {
@@ -110,23 +123,19 @@ export default {
         }, 300)
       },
       async submit () {
-        this.$v.$touch()
-        if (this.$v.$invalid) {
-        this.submitStatus = 'ERROR'
-        console.log('error')
-      } else {
         try {
-          let formContent = { id: this.$route.params.id, profile: {telephone: this.membre.coordonnees.telephone, }}
-          let result = await editProfile(formContent)
-          getProfile({id: this.$route.params.id, token: localStorage.token})
-          this.$router.push('/')
+          this.loading = true
+          let formContent = { id: this.item._id, signal: this.item.nextAction, delay: this.item.delay, cause: this.item.cause }
+          let result = await sendSignal(formContent)
+          if (result) {
+            this.loading=false
+            this.close()
+          }
         }
         catch(error) {
             console.log(error)
         }
-        this.close()
       }
-      }
-    }
+  }
 }
 </script>

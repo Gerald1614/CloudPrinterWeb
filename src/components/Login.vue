@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import {logIn, getProfile} from '../utilities/fetchData.js'
+import {logIn} from '../utilities/fetchData.js'
 import { setTimeout } from 'timers';
 export default {
   data () {

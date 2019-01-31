@@ -1,5 +1,6 @@
 /* eslint-disable func-names */
-import store from '../store/index';
+import store from '../store';
+
 
 function loginFailed(err) {
   store.dispatch('Auth/LOGOUT');
@@ -14,6 +15,35 @@ function signupFailed(err) {
 const myHeaders = new Headers({
   'Content-Type': 'application/json',
 });
+let signalBody = {};
+
+export const sendSignal = async function (data) {
+  const params = `/workflow/${data.signal}/${data.id}`;
+  if (data.signal === 'ItemCanceled') {
+    signalBody = { cause: data.cause, message: data.message };
+  } else if (data.signal === 'ItemError') {
+    signalBody = { cause: data.cause, delay: data.delay };
+  } else if (data.signal === 'ItemShipped') {
+    signalBody = { tracking: data.tracking, shipping_option: data.shipping_option };
+  }
+  const token = store.getters['Auth/isAuthenticated'];
+  return fetch(`${process.env.VUE_APP_CLOUD_PRINTER_URL}${params}`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(signalBody),
+  })
+    .then(response => response.json()
+      .then((body) => {
+        store.dispatch('Orders/UpdateSignal', { id: data.id, body });
+        return body;
+      }))
+    .catch(err => signupFailed(err));
+};
+
 export const getOrders = async function () {
   return fetch(`${process.env.VUE_APP_CLOUD_PRINTER_URL}/orders`, {
     method: 'GET',

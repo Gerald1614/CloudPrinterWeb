@@ -14,8 +14,6 @@
   </v-layout>
 </v-container>
 </template>
-
-
 <script>
 import ShippingAddress from './Details/ShippingAddress'
 import OrderClient from './Details/OrderClient'

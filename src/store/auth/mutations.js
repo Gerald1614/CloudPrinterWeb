@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 export const login = (state, user) => {
   state.user = user;
 };

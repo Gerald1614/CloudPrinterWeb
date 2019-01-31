@@ -71,3 +71,11 @@
     })
   }
 </script>
+
+<style lang="stylus" scoped>
+.v-btn {
+  position: absolute
+  top : 0px;
+  right: 0px;
+}
+</style>
