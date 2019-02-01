@@ -41,7 +41,10 @@ export const sendSignal = async function (data) {
         store.dispatch('Orders/UpdateSignal', { id: data.id, body });
         return body;
       }))
-    .catch(err => signupFailed(err));
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
 };
 
 export const getOrders = async function () {
@@ -56,7 +59,27 @@ export const getOrders = async function () {
           store.dispatch('Orders/LoadOrders', body);
         }
       }))
-    .catch(err => signupFailed(err));
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+};
+export const getArchivedOrders = async function () {
+  return fetch(`${process.env.VUE_APP_CLOUD_PRINTER_URL}/orders/archives`, {
+    method: 'GET',
+    mode: 'cors',
+    headers: myHeaders,
+  })
+    .then(response => response.json()
+      .then((body) => {
+        if (body.length > 0) {
+          store.dispatch('Orders/LoadArchivedOrders', body);
+        }
+      }))
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
 };
 
 export const signUp = async function (formContent) {

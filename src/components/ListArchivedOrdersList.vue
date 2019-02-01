@@ -66,6 +66,7 @@
 
 <script>
 import ListOrdersDetails from './ListOrdersDetails'
+import { getArchivedOrders } from '../utilities/fetchData.js'
 import DialogError from './DialogBox/DialogError'
 import DialogCancel from './DialogBox/DialogCancel'
 import DialogShipping from './DialogBox/DialogShipping'
@@ -79,10 +80,10 @@ export default {
     DialogShipping,
     DialogDefault
   },
-  name: 'ListOrdersList',
+  name: 'ListArchivedOrdersList',
   data () {
     return {
-      tableTitle: '',
+      tableTitle: 'Archived and Cancelled orders',
       signal: {
         'id': '',
         'status': {
@@ -108,15 +109,12 @@ export default {
         ],
     }
   },
+    mounted: () => {
+    getArchivedOrders()
+  },
   computed: {
     items () {
-      if (this.$route.params.liste === 'currentOrders')  {
-        this.tableTitle = 'Current Orders'
-        return this.$store.getters['Orders/getOrders']}
-      else if (this.$route.params.liste === 'newOrders'){
-        this.tableTitle = 'New Orders'
-        return this.$store.getters['Orders/getNewOrders']
-      } else this.$router.push('/404')
+        return this.$store.getters['Orders/getArchivedOrders']
     },
   },
   methods: {
@@ -158,5 +156,4 @@ export default {
 th {
   padding: 8px !important 
 }
-
 </style>

@@ -145,9 +145,8 @@ export default {
       right: null,
       orders: [
         ['New Orders', 'input', '/ordersList/newOrders'],
-        ['Order List Card', 'list', '/ordersCard'],
         ['Order List', 'list', '/ordersList/currentOrders'],
-        ['Completed or Canceled', 'done_all', '#']
+        ['Completed or Canceled', 'done_all', '/archivedOrdersList']
       ],
     }
   }

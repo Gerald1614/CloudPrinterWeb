@@ -4,8 +4,8 @@ import Home from './views/Home.vue';
 import Login from './components/Login.vue';
 import Signup from './components/Signup.vue';
 import Logout from './components/Logout.vue';
-import ListOrdersCards from './components/ListOrdersCards.vue';
 import ListOrdersList from './components/ListOrdersList.vue';
+import ListArchivedOrdersList from './components/ListArchivedOrdersList.vue';
 
 Vue.use(Router);
 
@@ -34,14 +34,14 @@ export default new Router({
       component: Logout,
     },
     {
-      path: '/ordersCard',
-      name: 'ordersCard',
-      component: ListOrdersCards,
-    },
-    {
       path: '/ordersList/:liste',
       name: 'ordersList',
       component: ListOrdersList,
+    },
+    {
+      path: '/archivedOrdersList',
+      name: 'archivedOrdersList',
+      component: ListArchivedOrdersList,
     },
     {
       path: '/404',
