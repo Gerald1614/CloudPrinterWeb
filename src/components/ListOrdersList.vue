@@ -23,7 +23,7 @@
         slot-scope="props"
       >
       <tr @click="props.expanded = !props.expanded">
-      <td class="px-2">{{ props.item.id }}</td>
+      <td class="px-2" v-bind:style="{ color: props.item.reorder_cause ? 'red' : 'black'}">{{ props.item.id }}</td>
       <td class="text-xs px-2">{{ props.item.title }}</td>
       <td class="text-xs px-2">{{ props.item.order.date | date }}</td>
       <td class="text-xs px-2">{{ props.item.order.priority | date }}</td>
