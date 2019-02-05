@@ -66,6 +66,7 @@
 
 <script>
 import ListOrdersDetails from './ListOrdersDetails'
+import { getOrders } from '../utilities/fetchData.js'
 import DialogError from './DialogBox/DialogError'
 import DialogCancel from './DialogBox/DialogCancel'
 import DialogShipping from './DialogBox/DialogShipping'
@@ -118,6 +119,12 @@ export default {
         return this.$store.getters['Orders/getNewOrders']
       } else this.$router.push('/404')
     },
+  },
+  beforeRouteUpdate (to, from, next) {
+    if (to.params.liste === 'newOrders') { 
+      getOrders();
+    }
+    next();
   },
   methods: {
     sendSignal(item) {
