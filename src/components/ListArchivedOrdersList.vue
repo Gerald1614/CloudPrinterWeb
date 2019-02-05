@@ -33,18 +33,7 @@
       <td v-if="props.item.status" class="text-xs px-2"><span><v-icon color="green darken-2" v-if="props.item.status.signalSent">mail_outline</v-icon><v-icon @click.stop="sendSignal(props.item)" color="red darken-2" v-else>unsubscribe</v-icon> {{  props.item.status.datetime | date}}</span></td>
       <td v-else class="text-xs px-2">-</td>
       <td class="align-center px-0">
-        <v-tooltip left>
-          <v-icon slot="activator" color="blue darken-2" @click.stop="nextStep(props.item , props.item.status ? props.item.status.type : 'newOrder')">skip_next</v-icon>
-          <span>Notify Cloud Printer > Next Action</span>
-        </v-tooltip>
-        <v-tooltip left>
-          <v-icon slot="activator" color="orange darken-2" @click.stop="nextStep(props.item, 'ItemError')">error</v-icon>
-           <span>Signal an error to Cloud Printer</span>
-        </v-tooltip>
-        <v-tooltip left>
-          <v-icon slot="activator" color="red darken-2" @click.stop="nextStep(props.item, 'ItemCanceled')">cancel</v-icon>
-          <span>Cancel the Order</span>
-        </v-tooltip>
+          <v-icon slot="activator" color="blue darken-2" @click.stop="editOrder(props.item)">edit</v-icon>
         </td>
       </tr>
     </template>
@@ -57,28 +46,16 @@
         Your search for "{{ search }}" found no results.
       </v-alert>
   </v-data-table>
-  <dialog-error v-bind:item="signal" v-show="dialogError"></dialog-error>
-  <dialog-cancel v-bind:item="signal" v-show="dialogCancel"></dialog-cancel>
-  <dialog-shipping v-bind:item="signal" v-show="dialogShipping"></dialog-shipping>
-  <dialog-default v-bind:item="signal" v-show="dialogDefault"></dialog-default>
   </v-card>
 </template>
 
 <script>
 import ListOrdersDetails from './ListOrdersDetails'
 import { getArchivedOrders } from '../utilities/fetchData.js'
-import DialogError from './DialogBox/DialogError'
-import DialogCancel from './DialogBox/DialogCancel'
-import DialogShipping from './DialogBox/DialogShipping'
-import DialogDefault from './DialogBox/DialogDefault'
 
 export default {
   components: {
-    ListOrdersDetails,
-    DialogError,
-    DialogCancel,
-    DialogShipping,
-    DialogDefault
+    ListOrdersDetails
   },
   name: 'ListArchivedOrdersList',
   data () {
@@ -90,11 +67,6 @@ export default {
           'type': '',
         },
       },
-      dialogError: false,
-      dialogCancel: false,
-      dialogShipping: false,
-      dialogDefault: false,
-      steps: ['ItemRegistered', 'ItemProduce', 'ItemProduced', 'ItemPacked', 'ItemShipped'],
       expand: false,
       search: '',
        headers: [
@@ -121,33 +93,8 @@ export default {
     sendSignal(item) {
       alert('send signal')
     },
-    nextStep (item, step) {
-      if (step ==='ItemCanceled') {
-        item.dialogCancel = true
-        item.nextAction = step
-      } else if(step === 'ItemError') {
-        item.dialogError = true
-        item.nextAction = step
-      }  else if (!item.hasOwnProperty('status')) {
-        item.nextAction = 'ItemRegistered'
-        item.dialogDefault = true
-      } else if (item.status.type === 'ItemPacked') {
-        item.dialogShipping = true
-        item.nextAction = this.steps[this.steps.findIndex(k => k===step)+1]
-      }  else if (item.status.type === 'ItemShipped') {
-        this.sendSignal()
-      }else {
-        item.nextAction = this.steps[this.steps.findIndex(k => k===step)+1]
-        item.dialogDefault = true
-      }
-      this.signal = Object.assign({}, item)
-        setTimeout(() => {
-          item.dialogError = false
-          item.dialogCancel = false
-          item.dialogShipping = false
-          item.dialogDefault = false
-          this.signal = Object.assign({}, item)
-        }, 3000)
+    editOrder (item) {
+      alert('edit order')
       },
     }
 }
