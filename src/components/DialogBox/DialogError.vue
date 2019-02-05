@@ -79,7 +79,7 @@ export default {
   mixins: [validationMixin],
   validations: {
     item: {
-    cause:  {required, minLength: minLength(20)},
+    cause:  {required, minLength: minLength(10)},
     delay:  {required, minLength: minLength(10)},
     }
   },
@@ -101,7 +101,7 @@ export default {
     causeErrors () {
       const errors = []
       if (!this.$v.item.cause.$dirty) return errors
-      !this.$v.item.cause.minLength && errors.push('cause must be at most 20 characters long')
+      !this.$v.item.cause.minLength && errors.push('cause must be at most 10 characters long')
       !this.$v.item.cause.required && errors.push('cause is required.')
       return errors
     },

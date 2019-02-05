@@ -4,7 +4,7 @@
       <v-layout row wrap>
         <v-flex pa-1 xs12 sm5>
           <div class="listHead">
-            <v-badge color="red" right>
+            <v-badge color="blue darken-2" right>
               <span slot="badge">{{ order.files.length}}</span>
               <div class="subheading">{{ order.product }}</div>
             </v-badge>
@@ -15,7 +15,7 @@
         </v-flex>
         <v-flex pa-1 xs12 sm4>
           <div class="listHead">
-            <v-badge color="red" right>
+            <v-badge color="blue darken-2" right>
               <span slot="badge">{{ order.order.addresses.length}}</span>
               <div class="subheading">Delivery address(es)</div>
             </v-badge>

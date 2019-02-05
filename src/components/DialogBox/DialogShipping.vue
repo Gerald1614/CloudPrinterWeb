@@ -79,8 +79,8 @@ export default {
   mixins: [validationMixin],
   validations: {
     item: {
-    tracking:  {required, minLength: minLength(8)},
-    shipping_option:  {required, minLength: minLength(20)},
+    tracking:  {required, minLength: minLength(10)},
+    shipping_option:  {required, minLength: minLength(10)},
     }
   },
   data () {
@@ -101,7 +101,7 @@ export default {
     causeErrors () {
       const errors = []
       if (!this.$v.item.tracking.$dirty) return errors
-      !this.$v.item.tracking.minLength && errors.push('tracking must be at most 8 characters long')
+      !this.$v.item.tracking.minLength && errors.push('tracking must be at most 10 characters long')
       !this.$v.item.tracking.required && errors.push('tracking is required.')
       return errors
     },
