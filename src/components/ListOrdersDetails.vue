@@ -10,6 +10,8 @@
             </v-badge>
             <p>{{ order.desc }}</p>
             <span>{{ order.pages }} pages, Qty : {{ order.count}}</span>
+            <v-spacer></v-spacer>
+            <span class="red">{{ order.error_download }}</span>
           </div>
           <print-job v-show="show" v-bind:order="order"></print-job>
         </v-flex>

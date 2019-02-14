@@ -21,19 +21,20 @@
                   <span class="subheading">{{item.nextAction}}</span>
                 </v-flex>
               </v-layout>
-              <v-layout align-center justify-space-around>
-                <v-flex xs12 sm6 md4>
-                  <v-text-field
-                    label="cause" 
-                    v-model="item.cause" 
+              <v-layout row>
+                  <v-select
+                    :items="causes"
+                    item-text='desc'
+                    item-value='name'
+                    outline
                     :error-messages="causeErrors"
                     required
                     @input="$v.item.cause.$touch()"
                     @blur="$v.item.cause.$touch()"
-                    class="subheading">
-                  </v-text-field>
-                </v-flex>
-                <v-flex xs12 sm6 md4>
+                    class="body-2">
+                  </v-select>
+                </v-layout>
+                <v-layout row>
                   <v-text-field
                     label="message" 
                     v-model="item.message"
@@ -43,7 +44,7 @@
                     @blur="$v.item.message.$touch()"
                     class="subheading">
                   </v-text-field>
-                </v-flex>
+                </v-layout>
               </v-layout>
             </v-container>
           </v-card-text>
@@ -72,6 +73,7 @@
 import { validationMixin } from 'vuelidate'
 import { required, minLength } from 'vuelidate/lib/validators'
 import { sendSignal } from '../../utilities/fetchData.js'
+import cancellationCauses from '../../utilities/cancellationCauses.json'
 
 export default {
   name: 'DialogCancel',
@@ -79,7 +81,7 @@ export default {
   mixins: [validationMixin],
   validations: {
     item: {
-    cause:  {required, minLength: minLength(10)},
+    cause:  {required},
     message:  {required, minLength: minLength(10)},
     }
   },
@@ -97,10 +99,12 @@ export default {
     }
   },
   computed: {
+    causes () {
+      return cancellationCauses.causes
+    },
     causeErrors () {
       const errors = []
       if (!this.$v.item.cause.$dirty) return errors
-      !this.$v.item.cause.minLength && errors.push('cause must be at most 10 characters long')
       !this.$v.item.cause.required && errors.push('cause is required.')
       return errors
     },

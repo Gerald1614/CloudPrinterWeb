@@ -1,5 +1,32 @@
 <template>
   <v-flex>
+      <div v-if="order.status.type === 'ItemError'">
+ <v-divider></v-divider>
+      <v-flex xs12>
+    <v-text-field
+      error
+      label="cause"
+      readonly
+      :value="order.ItemError.cause"
+    ></v-text-field>
+    </v-flex>
+    <v-flex xs12>
+    <v-text-field
+      error
+      label="delay"
+      readonly
+      :value="order.ItemError.delay"
+    ></v-text-field>
+        <v-text-field
+      error
+      label="date"
+      readonly
+      :value="order.ItemError.datetime"
+    ></v-text-field>
+    </v-flex>
+      <v-flex xs12>
+  </v-flex>
+  </div>
     <v-flex xs12>
     <v-text-field
       label="Client Name"

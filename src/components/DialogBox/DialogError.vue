@@ -35,7 +35,7 @@
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                   <v-text-field
-                    label="delay" 
+                    label="delay (in Hours)" 
                     v-model="item.delay"
                     :error-messages="delayErrors"
                     required

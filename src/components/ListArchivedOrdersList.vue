@@ -26,7 +26,7 @@
       <td class="px-2">{{ props.item.id }}</td>
       <td class="text-xs px-2">{{ props.item.title }}</td>
       <td class="text-xs px-2">{{ props.item.order.date | date }}</td>
-      <td class="text-xs px-2">{{ props.item.order.priority | date }}</td>
+      <td class="text-xs px-2">{{ props.item.order.dueDate | date }}</td>
       <td class="text-xs px-2">{{ props.item.count }}</td>
       <td v-if="props.item.status" class="text-xs px-2">{{ props.item.status.type }}</td>
       <td v-else class="text-xs px-2">New Order</td>

@@ -1,0 +1,11 @@
+{ "causes": [
+    {
+    "name": "CancelCoverSpine",
+    "desc": "Production cancellation due to wrong cover spine width"
+    },
+        {
+            "name": "CancelBookSize",
+            "desc": "Production cancellation due to wrong size or wrong orientation"
+        }
+    ]
+}

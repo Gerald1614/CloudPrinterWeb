@@ -16,6 +16,7 @@ import Vuetify, {
   VTextField,
   VTooltip,
   VBadge,
+  VChip,
   VBtn,
   VIcon,
 } from 'vuetify/lib';
@@ -40,6 +41,7 @@ Vue.use(Vuetify, {
     VTextField,
     VTooltip,
     VBadge,
+    VChip,
     VBtn,
     VIcon,
   },

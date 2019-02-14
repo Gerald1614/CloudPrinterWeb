@@ -23,10 +23,17 @@
         slot-scope="props"
       >
       <tr @click="props.expanded = !props.expanded">
-      <td class="px-2" v-bind:style="{ color: props.item.reorder_cause ? 'red' : 'black'}">{{ props.item.id }}</td>
+      <td class="px-2" v-bind:style="{ color: props.item.reorder_cause ? 'red' : 'black'}">
+        {{ props.item.id }}
+        <v-chip v-if="props.item.reorder_cause || props.item.error_download" outline small color="red">
+          <v-icon left>report_problem</v-icon>
+          <span v-if="props.item.reorder_cause">REORDER</span>
+          <span v-if="props.item.error_download">Received errors</span>
+        </v-chip>
+      </td>
       <td class="text-xs px-2">{{ props.item.title }}</td>
       <td class="text-xs px-2">{{ props.item.order.date | date }}</td>
-      <td class="text-xs px-2">{{ props.item.order.priority | date }}</td>
+      <td class="text-xs px-2">{{ props.item.order.dueDate | date }}</td>
       <td class="text-xs px-2">{{ props.item.count }}</td>
       <td v-if="props.item.status" class="text-xs px-2">{{ props.item.status.type }}</td>
       <td v-else class="text-xs px-2">New Order</td>

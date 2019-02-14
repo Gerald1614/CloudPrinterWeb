@@ -38,6 +38,7 @@ export const sendSignal = async function (data) {
   })
     .then(response => response.json()
       .then((body) => {
+        console.log(body)
         store.dispatch('Orders/UpdateSignal', { id: data.id, body });
         return body;
       }))
