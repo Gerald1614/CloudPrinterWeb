@@ -23,29 +23,29 @@
               </v-layout>
               <v-layout row>
                   <v-select
+                    v-model="select"
                     :items="causes"
                     item-text='desc'
                     item-value='name'
                     outline
                     :error-messages="causeErrors"
                     required
-                    @input="$v.item.cause.$touch()"
-                    @blur="$v.item.cause.$touch()"
+                    @change="$v.select.$touch()"
+                    @blur="$v.select.$touch()"
                     class="body-2">
                   </v-select>
                 </v-layout>
                 <v-layout row>
                   <v-text-field
                     label="message" 
-                    v-model="item.message"
-                    :error-messages="delayErrors"
+                    v-model="message"
+                    :error-messages="messageErrors"
                     required
-                    @input="$v.item.message.$touch()"
-                    @blur="$v.item.message.$touch()"
+                    @input="$v.message.$touch()"
+                    @blur="$v.message.$touch()"
                     class="subheading">
                   </v-text-field>
                 </v-layout>
-              </v-layout>
             </v-container>
           </v-card-text>
 
@@ -80,15 +80,15 @@ export default {
   props: ['item'],
   mixins: [validationMixin],
   validations: {
-    item: {
-    cause:  {required},
-    message:  {required, minLength: minLength(10)},
-    }
+    select: { required },
+    message: { required, minLength: minLength(10) }
   },
   data () {
     return {
       dialog: false,
-      loading: false
+      loading: false,
+      select: null,
+      message: ''
     }
   },
   watch: {
@@ -104,15 +104,15 @@ export default {
     },
     causeErrors () {
       const errors = []
-      if (!this.$v.item.cause.$dirty) return errors
-      !this.$v.item.cause.required && errors.push('cause is required.')
+      if (!this.$v.select.$dirty) return errors
+      !this.$v.select.required && errors.push('cause is required.')
       return errors
     },
-    delayErrors () {
+    messageErrors () {
       const errors = []
-      if (!this.$v.item.message.$dirty) return errors
-      !this.$v.item.message.minLength && errors.push('message must be at most 10 characters long')
-      !this.$v.item.message.required && errors.push('message is required.')
+      if (!this.$v.message.$dirty) return errors
+      !this.$v.message.minLength && errors.push('minimum 10 characters long')
+      !this.$v.message.required && errors.push('message is required.')
       return errors
     }
   },
@@ -121,22 +121,25 @@ export default {
         this.dialog = false
         setTimeout(() => {
           this.$v.$reset()
-          this.item.cause = ''
-          this.item.message = ''
+          this.select = null
+          this.message = ''
         }, 300)
       },
       async submit () {
-        try {
-          this.loading = true
-          let formContent = { id: this.item._id, signal: this.item.nextAction, cause: this.item.cause, message: this.item.message }
-          let result = await sendSignal(formContent)
-          if (result) {
-            this.loading=false
-            this.close()
+        this.$v.$touch()
+        if (!this.$v.$invalid) {
+          try {
+            this.loading = true
+            let formContent = { id: this.item._id, signal: this.item.nextAction, cause: this.select, message: this.message }
+            let result = await sendSignal(formContent)
+            if (result) {
+              this.loading=false
+              this.close()
+            }
           }
-        }
-        catch(error) {
-            console.log(error)
+          catch(error) {
+              console.log(error)
+          }
         }
       }
   }

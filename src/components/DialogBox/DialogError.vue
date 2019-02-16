@@ -97,7 +97,6 @@ export default {
     }
   },
   computed: {
-
     causeErrors () {
       const errors = []
       if (!this.$v.item.cause.$dirty) return errors
@@ -123,6 +122,8 @@ export default {
         }, 300)
       },
       async submit () {
+          this.$v.$touch()
+          if (!this.$v.$invalid) {
         try {
           this.loading = true
           let formContent = { id: this.item._id, signal: this.item.nextAction, delay: this.item.delay, cause: this.item.cause }
@@ -135,6 +136,7 @@ export default {
         catch(error) {
             console.log(error)
         }
+      }
       }
   }
 }

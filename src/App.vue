@@ -12,7 +12,6 @@
           <v-list-tile-avatar>
             <img src="../public/img/icons/icon-192x192.png">
           </v-list-tile-avatar>
-
           <v-list-tile-content>
             <v-list-tile-title>Cloud Printer</v-list-tile-title>
           </v-list-tile-content>
@@ -28,6 +27,16 @@
       </v-list>
     </v-toolbar>
     <v-list dense>
+              <v-list-tile
+          to='/home'
+        >
+          <v-list-tile-action>
+            <v-icon>dashboard</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>dashboard</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       <v-list-group>
         <v-list-tile slot="activator">
           <v-list-tile-action>

@@ -15,7 +15,7 @@
       :headers="headers"
       :search="search"
       :items="items"
-      item-key="id"
+      item-key="_id"
       class="elevation-1"
     >
       <template

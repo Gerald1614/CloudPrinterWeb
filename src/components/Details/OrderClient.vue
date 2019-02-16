@@ -1,7 +1,7 @@
 <template>
   <v-flex>
-      <div v-if="order.status.type === 'ItemError'">
- <v-divider></v-divider>
+    <div v-if="order.status.type === 'ItemError'">
+    <v-divider></v-divider>
       <v-flex xs12>
     <v-text-field
       error
@@ -21,7 +21,34 @@
       error
       label="date"
       readonly
-      :value="order.ItemError.datetime"
+      :value="order.ItemError.datetime | date"
+    ></v-text-field>
+    </v-flex>
+      <v-flex xs12>
+  </v-flex>
+  </div>
+      <div v-if="order.status.type === 'ItemCanceled'">
+    <v-divider></v-divider>
+      <v-flex xs12>
+    <v-text-field
+      error
+      label="cause"
+      readonly
+      :value="order.ItemCanceled.cause"
+    ></v-text-field>
+    </v-flex>
+    <v-flex xs12>
+    <v-text-field
+      error
+      label="message"
+      readonly
+      :value="order.ItemCanceled.message"
+    ></v-text-field>
+        <v-text-field
+      error
+      label="date"
+      readonly
+      :value="order.ItemCanceled.datetime | date"
     ></v-text-field>
     </v-flex>
       <v-flex xs12>
