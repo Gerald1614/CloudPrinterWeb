@@ -1,24 +1,20 @@
 
 
 <script>
-import { Bar, mixins } from 'vue-chartjs'
+import { Doughnut, mixins } from 'vue-chartjs'
 
 export default {
-  name: 'StagesChart',
-  extends: Bar,
+  name: 'CurrentMonth',
+  extends: Doughnut,
   mixins:[mixins.reactiveProp],
   data () {
     return {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      scales: {
-          yAxes: [{
-              ticks: {
-                  min: 0,
-              } 
-          }],
-      }
+      legend: {
+        display: false
+        },
     }
   }
   },
@@ -27,3 +23,4 @@ export default {
   }
 }
 </script>
+

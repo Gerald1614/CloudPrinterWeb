@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import { getOrders } from './utilities/fetchData.js'
+import { getOrders,getArchivedOrders } from './utilities/fetchData.js'
 import store from '../src/store/index'
 import { mapGetters } from 'vuex'
 import DashBoard from './components/DashBoard'
@@ -140,7 +140,8 @@ export default {
   // }
   // },
   mounted: () => {
-    getOrders()
+    getOrders();
+    getArchivedOrders();
   },
   computed: {
     ...mapGetters({
