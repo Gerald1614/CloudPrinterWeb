@@ -2,6 +2,9 @@
 export const getOrders = state => state.orders.filter(order => typeof order.status !== 'undefined');
 export const getNewOrders = state => state.orders.filter(order => typeof order.status === 'undefined');
 export const getArchivedOrders = state => state.archivedOrders;
+export const getOrdersCount = state => state.orders.filter(order => typeof order.status !== 'undefined').length;
+export const getNewOrdersCount = state => state.orders.filter(order => typeof order.status === 'undefined').length;
+export const getArchivedOrdersCount = state => state.archivedOrders.length;
 export const getOrderbyId = state => id => state.orders.find(order => order._id === id);
 export const statsOrderStages = (state) => {
   const stages = ['ItemRegistered', 'ItemProduce', 'ItemProduced', 'ItemPacked'];

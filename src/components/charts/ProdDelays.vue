@@ -35,7 +35,7 @@ export default {
   computed: {
     dataProdDelays() {
        return {
-      labels: ['>-10 days', '-10 < due <-5', ' 5 < due <-2', ' -2< due <-1', ' -1< due <1', ' 1< due <5',  '5 < due <10', '>10 days'],
+      labels: ['<-10 days', '[-10, -5]', '[-5, -2]', '[-2, -1]', '[-1, 1]', '[1, 5]',  '[5, 10]', '>10 days'],
       datasets: [
         {
           pointBackgroundColor: 'black',

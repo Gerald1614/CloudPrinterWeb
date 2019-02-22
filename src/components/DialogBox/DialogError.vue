@@ -70,7 +70,7 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, minLength } from 'vuelidate/lib/validators'
+import { required, minLength, between } from 'vuelidate/lib/validators'
 import { sendSignal } from '../../utilities/fetchData.js'
 
 export default {
@@ -80,7 +80,7 @@ export default {
   validations: {
     item: {
     cause:  {required, minLength: minLength(10)},
-    delay:  {required, minLength: minLength(10)},
+    delay:  {required, between: between(8, 144)},
     }
   },
   data () {
@@ -107,7 +107,7 @@ export default {
     delayErrors () {
       const errors = []
       if (!this.$v.item.delay.$dirty) return errors
-      !this.$v.item.delay.minLength && errors.push('delay must be at most 10 characters long')
+      !this.$v.item.delay.between && errors.push('delay must be between 8 to 144 hours')
       !this.$v.item.delay.required && errors.push('delay is required.')
       return errors
     }
@@ -118,7 +118,7 @@ export default {
         setTimeout(() => {
           this.$v.$reset()
           this.item.cause = ''
-          this.item.delay = ''
+          this.item.delay = 0
         }, 300)
       },
       async submit () {

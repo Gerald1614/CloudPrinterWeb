@@ -98,8 +98,10 @@
             <v-list-tile-action>
               <v-icon v-text="order[1]"></v-icon>
             </v-list-tile-action>
+            <v-badge color="blue darken-2" right>
+              <span slot="badge">{{ orderCount[i] }}</span>
             <v-list-tile-title v-text="order[0]"></v-list-tile-title>
-
+            </v-badge>
           </v-list-tile>
         </v-list-group>
     </v-list>
@@ -145,8 +147,15 @@ export default {
   },
   computed: {
     ...mapGetters({
-    user: 'Auth/getLoggedUser'
-    })
+    user: 'Auth/getLoggedUser',
+    newOrderCount: 'Orders/getNewOrdersCount',
+    currentOrdersCount: 'Orders/getOrdersCount',
+    archiveOrdersCount: 'Orders/getArchivedOrdersCount'
+    }),
+    orderCount () {
+      return  [this.newOrderCount, this.currentOrdersCount, this.archiveOrdersCount]
+    }
+    
   },
   data () {
     return {
