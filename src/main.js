@@ -96,7 +96,7 @@ function updateSubscriptionOnServer(subscription) {
   if (subscription) {
     var jsonSubscription = JSON.stringify(subscription);
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:3000/api/v1/subscribe', true);
+    xhr.open('POST', 'https://cloudprinter.gegeraptor.com/api/v1/subscribe', true);
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.onload = () => {
       // do something to response

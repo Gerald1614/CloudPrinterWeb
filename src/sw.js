@@ -58,7 +58,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  new RegExp('http://localhost:8080/api/v1/orders'),
+  new RegExp('https://cloudprinter.gegeraptor.com/api/v1/orders'),
   workbox.strategies.staleWhileRevalidate({
     cacheName: 'DATA-ORDERS',
   }),
