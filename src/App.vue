@@ -29,6 +29,7 @@
     <v-list dense>
               <v-list-tile
           to='/home'
+          v-if="this.$store.getters['Auth/isAuthenticated']"
         >
           <v-list-tile-action>
             <v-icon>dashboard</v-icon>
