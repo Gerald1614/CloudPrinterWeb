@@ -11,7 +11,7 @@ self.addEventListener('notificationclick', (event) => {
   if (action === 'close') {
     notification.close();
   } if (action === 'explore') {
-    clients.openWindow(process.env.VUE_APP_BASE_URL);
+    clients.openWindow('http://localhost:80');
 
     notification.close();
   } else {
@@ -58,7 +58,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  new RegExp(`${process.env.VUE_APP_CLOUD_PRINTER_URL}/orders`),
+  new RegExp('https://cloudprinter.gegeraptor.com/api/v1/orders'),
   workbox.strategies.staleWhileRevalidate({
     cacheName: 'DATA-ORDERS',
   }),
