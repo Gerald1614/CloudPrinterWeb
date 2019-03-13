@@ -9,7 +9,7 @@
             <v-text-field
               v-model.trim="name"
               :error-messages="nameErrors"
-              :counter="3"
+              :counter="4"
               label="Name"
               required
               @input="$v.name.$touch()"

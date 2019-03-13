@@ -54,16 +54,34 @@
         </v-tooltip>
         </td>
       </tr>
+
     </template>
-          <template slot="expand" slot-scope="props">
+      <template slot="expand" slot-scope="props">
         <v-card flat>
           <list-orders-details v-bind:order="props.item"></list-orders-details>
         </v-card>
+            <v-btn
+              @click.stop="editOrderItem=true"
+              color="red darken-2"
+              fixed
+              dark
+              small
+              bottom
+              right
+              fab
+            >
+            <v-icon>edit</v-icon>
+          </v-btn>
+        <v-dialog v-model="editOrderItem">
+            <edit-order-item v-bind:item="props.item"></edit-order-item>
+            <v-btn class="right mt-4" dark color="red darken-2" @click="editOrderItem=false">cancel</v-btn>
+        </v-dialog>
       </template>
       <v-alert slot="no-results" :value="true" color="error" icon="warning">
         Your search for "{{ search }}" found no results.
       </v-alert>
   </v-data-table>
+
   <dialog-error v-bind:item="signal" v-show="dialogError"></dialog-error>
   <dialog-cancel v-bind:item="signal" v-show="dialogCancel"></dialog-cancel>
   <dialog-shipping v-bind:item="signal" v-show="dialogShipping"></dialog-shipping>
@@ -78,10 +96,12 @@ import DialogError from './DialogBox/DialogError'
 import DialogCancel from './DialogBox/DialogCancel'
 import DialogShipping from './DialogBox/DialogShipping'
 import DialogDefault from './DialogBox/DialogDefault'
+import EditOrderItem from './EditOrderItem'
 
 export default {
   components: {
     ListOrdersDetails,
+    EditOrderItem,
     DialogError,
     DialogCancel,
     DialogShipping,
@@ -97,6 +117,7 @@ export default {
           'type': '',
         },
       },
+      editOrderItem: false,
       dialogError: false,
       dialogCancel: false,
       dialogShipping: false,

@@ -8,9 +8,84 @@
         "desc": "Production cancellation due to wrong cover spine width"
     },
     {
-
         "name": "CancelBookSize",
         "desc": "Production cancellation due to wrong size or wrong orientation"
+    },
+    {
+        "name": "CancelCoverSize",
+        "desc": "Production cancellation due to wrong size or wrong orientation"
+    },
+    {
+        "name": "CancelBookCorrupt",
+        "desc": "Production cancellation due to corrupt book block file"
+    },
+    {
+        "name": "CancelCoverCorrupt",
+        "desc": "Production cancellation due to corrupt cover file"
+    },
+    {
+        "name": "CancelBookTrim",
+        "desc": "Production cancellation due to wrong trim size on book block"
+    },
+    {
+        "name": "CancelBookSize",
+        "desc": "Production cancellation due to wrong size or wrong orientation"
+    },
+    {
+        "name": "CancelCoverTrim",
+        "desc": "Production cancellation due to wrong trim size on cover"
+    },
+    {
+        "name": "CancelPageCount",
+        "desc": "Production cancellation due to wrong page count in book block"
+    },
+    {
+        "name": "CancelUnknownFont",
+        "desc": "Production cancellation due to unknown fonts used"
+    },
+    {
+        "name": "CancelBookMargins",
+        "desc": "Production cancellation due to wrong margin size on book block"
+    },
+    {
+        "name": "CancelCoverMargins",
+        "desc": "Production cancellation due to wrong margin size on cover"
+    },
+    {
+        "name": "CancelBookRip",
+        "desc": "Production cancellation due to rip error on book block"
+    },
+    {
+        "name": "CancelCoverRip",
+        "desc": "Production cancellation due to rip error on cover"
+    },
+    {
+        "name": "CancelUserRequest",
+        "desc": "Production cancellation due to user/customer request"
+    },
+    {
+        "name": "CancelInkjetCoverage",
+        "desc": "Production cancellation due to too high inkjet coverage"
+    },
+    {
+        "name": "CancelValidateError",
+        "desc": "Production cancellation due to validation error"
+    },
+    {
+        "name": "CancelInvalidAddress",
+        "desc": "Production cancellation due to invalid shipping address"
+    },
+    {
+        "name": "CancelTestOrder",
+        "desc": "Production cancellation due to test order flag"
+    },
+    {
+        "name": "CancelFilesCorrupt",
+        "desc": "Production cancellation due to corrupt files"
+    },
+    {
+        "name": "CancelMiscError",
+        "desc": "Production cancellation due to miscellaneous error"
     }
     ]
 }
