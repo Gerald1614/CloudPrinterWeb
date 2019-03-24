@@ -83,6 +83,23 @@ export const getArchivedOrders = async function () {
     });
 };
 
+export const updateItem = async function (formContent) {
+  return fetch(`${process.env.VUE_APP_CLOUD_PRINTER_URL}/order/update`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: myHeaders,
+    body: JSON.stringify(formContent),
+  })
+    .then(response => response.json()
+      .then((body) => {
+        store.dispatch('Orders/updateItem', body);
+      }))
+    .catch((err) => {
+      console.log(err);
+      return err;
+    });
+};
+
 export const signUp = async function (formContent) {
   return fetch(`${process.env.VUE_APP_CLOUD_PRINTER_URL}/account/register`, {
     method: 'POST',

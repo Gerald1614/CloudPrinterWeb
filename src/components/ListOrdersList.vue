@@ -17,11 +17,9 @@
       :items="items"
       item-key="_id"
       class="elevation-1"
+      :expand="expand"
     >
-      <template
-        slot="items"
-        slot-scope="props"
-      >
+      <template v-slot:items="props">
       <tr @click="props.expanded = !props.expanded">
       <td class="px-2" v-bind:style="{ color: props.item.reorder_cause ? 'red' : 'black'}">
         {{ props.item.id }}
@@ -56,25 +54,25 @@
       </tr>
 
     </template>
-      <template slot="expand" slot-scope="props">
+      <template v-slot:expand="props">
         <v-card flat>
           <list-orders-details v-bind:order="props.item"></list-orders-details>
         </v-card>
-            <v-btn
-              @click.stop="editOrderItem=true"
-              color="red darken-2"
-              fixed
-              dark
-              small
-              bottom
-              right
-              fab
-            >
-            <v-icon>edit</v-icon>
-          </v-btn>
-        <v-dialog v-model="editOrderItem">
-            <edit-order-item v-bind:item="props.item"></edit-order-item>
-            <v-btn class="right mt-4" dark color="red darken-2" @click="editOrderItem=false">cancel</v-btn>
+        <v-btn
+          @click.stop="showDialog()"
+          color="red darken-2"
+          fixed
+          dark
+          small
+          bottom
+          right
+          fab
+        >
+          <v-icon>edit</v-icon>
+        </v-btn>
+        <v-dialog v-model="editOrder" persistent>
+            <edit-order-item ref="clearEdit" v-bind:itemChild="props.item"></edit-order-item>
+            <v-btn class="cancel" dark color="red darken-2" @click="cancelEdit()">cancel</v-btn>
         </v-dialog>
       </template>
       <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -117,7 +115,7 @@ export default {
           'type': '',
         },
       },
-      editOrderItem: false,
+      editOrder: false,
       dialogError: false,
       dialogCancel: false,
       dialogShipping: false,
@@ -157,6 +155,17 @@ export default {
     sendSignal(item) {
       alert('send signal')
     },
+    showDialog() {
+      this.editOrder=true;
+    //   this.forceRerender();
+    // },
+    // forceRerender() {
+    //   this.refreshKey +=1;
+    },
+    cancelEdit() {
+      this.$refs.clearEdit.clear()
+      this.editOrder=false
+    },
     nextStep (item, step) {
       if (step ==='ItemCanceled') {
         item.dialogCancel = true
@@ -191,6 +200,10 @@ export default {
 <style lang="stylus">
 th {
   padding: 8px !important 
+}
+.cancel {
+  position: relative
+  left: 20px
 }
 
 </style>

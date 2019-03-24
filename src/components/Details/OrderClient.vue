@@ -27,6 +27,33 @@
       <v-flex xs12>
   </v-flex>
   </div>
+      <div v-if="order.status.type === 'ItemShipped'">
+    <v-divider></v-divider>
+      <v-flex xs12>
+    <v-text-field
+      error
+      label="date"
+      readonly
+      :value="order.ItemShipped.datetime | date"
+    ></v-text-field>
+    </v-flex>
+    <v-flex xs12>
+    <v-text-field
+      error
+      label="tracking"
+      readonly
+      :value="order.ItemShipped.tracking"
+    ></v-text-field>
+        <v-text-field
+      error
+      label="date"
+      readonly
+      :value="order.ItemShipped.shipping_option"
+    ></v-text-field>
+    </v-flex>
+      <v-flex xs12>
+  </v-flex>
+  </div>
       <div v-if="order.status.type === 'ItemCanceled'">
     <v-divider></v-divider>
       <v-flex xs12>
